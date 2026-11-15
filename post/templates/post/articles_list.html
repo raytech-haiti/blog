@@ -1,0 +1,34 @@
+{% extends 'base.html'%}
+
+
+{% block content %}
+
+    <h1>Le Blog de RayDev509</h1>
+
+    {% for article in articles %}
+    <article>
+
+    <div class="article-title">
+        <h2>{{ article.title }}</h2>
+
+         {% if request.user.is_authenticated %}
+             <div>
+            	<a href="{% url 'post:update' slug=article.slug %}">Modifier l'article</a>
+                <a href="{% url 'post:delete' slug=article.slug %}">Supprimer l'article</a>
+             </div>
+         {% endif %}
+    </div>
+
+        <h5 class="article-author">Publie par <i> {{ article.author_default}}</i> le {{ article.date_create|date:'j F Y' }}</h5>
+        <p class="article-extraire">{{ article.content|safe|truncatewords:50 }}</p>
+
+        <form action="{% url 'post:article' slug=article.slug %}">
+            <button class="btn btn-submit">lire l'article</button>
+        </form>
+
+    </article>
+    {% endfor %}
+
+
+{% endblock %}
+
